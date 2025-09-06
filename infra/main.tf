@@ -51,3 +51,12 @@ module "taskflow_bucket" {
     Project     = "taskflow-project"
   }
 }
+
+resource "aws_acm_certificate" "taskflow-certificate" {
+  domain_name       = "tflow.redeploy.online"
+  validation_method = "DNS"
+}
+
+resource "aws_acm_certificate_validation" "taskflow-validation" {
+  certificate_arn = aws_acm_certificate.taskflow-certificate.arn
+}
