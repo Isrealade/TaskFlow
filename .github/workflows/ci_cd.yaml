@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Run Lint and Test
-        continue-on-error: true 
+        continue-on-error: true # due to issue with the code 
         run: |
           npm run lint && \
           npm run format && \
@@ -79,7 +79,7 @@ jobs:
 
   github-pages-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: code-validation
     permissions:
       pages: write
@@ -101,7 +101,7 @@ jobs:
 
   s3-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: code-validation
     steps:
       - name: Checkout Code
