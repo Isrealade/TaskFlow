@@ -1,0 +1,57 @@
+/* Component-specific styles */
+
+.task-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow;
+}
+
+.task-card-completed {
+  @apply opacity-75;
+}
+
+.priority-high {
+  @apply text-red-600 bg-red-100;
+}
+
+.priority-medium {
+  @apply text-yellow-600 bg-yellow-100;
+}
+
+.priority-low {
+  @apply text-green-600 bg-green-100;
+}
+
+.status-todo {
+  @apply text-gray-600 bg-gray-100;
+}
+
+.status-in-progress {
+  @apply text-blue-600 bg-blue-100;
+}
+
+.status-completed {
+  @apply text-green-600 bg-green-100;
+}
+
+.filter-section {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6;
+}
+
+.stats-card {
+  @apply rounded-lg p-4;
+}
+
+.stats-card-total {
+  @apply bg-gray-50;
+}
+
+.stats-card-completed {
+  @apply bg-green-50;
+}
+
+.stats-card-in-progress {
+  @apply bg-blue-50;
+}
+
+.stats-card-overdue {
+  @apply bg-red-50;
+}
