@@ -53,4 +53,12 @@ docker-compose.override.yml
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
+# Terraform state
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+terraform.tfvars
+terraform.tfvars.json
