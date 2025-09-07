@@ -4,6 +4,6 @@ output "taskflow_bucket_url" {
 }
 
 output "cloudfront_domain" {
-  value = module.cloudfront.cloudfront_distribution_domain_name
+  value       = module.cloudfront.cloudfront_distribution_domain_name
   description = "The cloudfront domain"
 }

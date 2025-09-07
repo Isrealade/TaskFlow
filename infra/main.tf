@@ -3,25 +3,16 @@ module "terraform-remote-state" {
   version = "1.1.2"
 
   s3 = {
-    bucket              = "taskflow-remote-state"
-    force_destroy       = true
-    object_lock_enabled = false
-    acl                 = "private"
+    bucket              = var.s3_remote.bucket
+    force_destroy       = var.s3_remote.force_destroy
+    object_lock_enabled = var.s3_remote.object_lock_enabled
+    acl                 = var.s3_remote.acl
   }
 
-  versioning = {
-    enabled = true
-  }
+  versioning = var.s3_remote.versioning
+  website    = var.s3_remote.website
 
-  website = {
-    enabled = false
-  }
-
-  tags = {
-    app         = "Terraform-remote-state"
-    Environment = "prod"
-    Project     = "taskflow-project"
-  }
+  tags = var.s3_remote.tags
 }
 
 module "taskflow_bucket" {
@@ -29,38 +20,23 @@ module "taskflow_bucket" {
   version = "1.1.2"
 
   s3 = {
-    bucket              = "taskflow-bucket-app"
-    force_destroy       = true
-    object_lock_enabled = false
-    acl                 = "private"
+    bucket              = var.taskflow_bucket.bucket
+    force_destroy       = var.taskflow_bucket.force_destroy
+    object_lock_enabled = var.taskflow_bucket.object_lock_enabled
+    acl                 = var.taskflow_bucket.acl
   }
 
-  versioning = {
-    enabled = true
-  }
+  versioning = var.taskflow_bucket.versioning
+  website    = var.taskflow_bucket.website
 
-  website = {
-    enabled        = true
-    index_document = "index.html"
-    error_document = "index.html"
-  }
-
-  tags = {
-    app         = "TaskFlow"
-    Environment = "prod"
-    Project     = "taskflow-project"
-  }
+  tags = var.taskflow_bucket.tags
 }
 
 resource "aws_acm_certificate" "taskflow-certificate" {
-  domain_name       = "redeploy.online"
-  validation_method = "EMAIL"
+  domain_name       = var.acm.domain_name
+  validation_method = var.acm.validation_method
 
-  tags = {
-    app         = "TaskFlow"
-    Environment = "prod"
-    Project     = "taskflow-project"
-  }
+  tags = var.acm.tags
 }
 
 resource "aws_acm_certificate_validation" "taskflow-validation" {
@@ -71,16 +47,14 @@ module "cloudfront" {
   source  = "terraform-aws-modules/cloudfront/aws"
   version = "5.0.0"
 
-  aliases = ["redeploy.online"]
+  aliases = var.cloudfront.aliases
 
-  comment     = "Cloudfront for my s3 bucket"
-  enabled     = true
-  price_class = "PriceClass_All"
+  comment     = var.cloudfront.comment
+  enabled     = var.cloudfront.enabled
+  price_class = var.cloudfront.price_class
 
-  create_origin_access_identity = true
-  origin_access_identities = {
-    s3_one = "OAI for my S3 bucke"
-  }
+  create_origin_access_identity = var.cloudfront.create_origin_access_identity
+  origin_access_identities      = var.cloudfront.origin_access_identities
 
   origin = {
     s3_one = {
@@ -91,41 +65,18 @@ module "cloudfront" {
     }
   }
 
-  default_root_object = "index.html"
+  default_root_object = var.cloudfront.default_root_object
 
-  default_cache_behavior = {
-    target_origin_id       = "s3_one"
-    viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
-    cached_methods         = ["GET", "HEAD"]
-    compress               = true
-    query_string           = true
-  }
+  default_cache_behavior = var.cloudfront.default_cache_behavior
 
-  ordered_cache_behavior = [
-    {
-      path_pattern           = "/static/*"
-      target_origin_id       = "s3_one"
-      viewer_protocol_policy = "redirect-to-https"
-
-      allowed_methods = ["GET", "HEAD", "OPTIONS"]
-      cached_methods  = ["GET", "HEAD"]
-      compress        = true
-      query_string    = true
-    }
-  ]
+  ordered_cache_behavior = var.cloudfront.ordered_cache_behavior
 
   viewer_certificate = {
     acm_certificate_arn = aws_acm_certificate.taskflow-certificate.arn
     ssl_support_method  = "sni-only"
   }
 
-  tags = {
-    name        = "taskflow-certificate"
-    app         = "TaskFlow"
-    Environment = "prod"
-    Project     = "taskflow-project"
-  }
+  tags = var.cloudfront.tags
 }
 
 
