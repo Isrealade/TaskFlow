@@ -8,12 +8,12 @@ terraform {
     }
   }
 
-    backend "s3" {
-        bucket       = "taskflow-remote-state"
-        key          = "terraform/terraform.tfstate"
-        region       = "us-east-1"
-        use_lockfile = true
-    }
+  backend "s3" {
+    bucket       = "taskflow-remote-state"
+    key          = "terraform/terraform.tfstate"
+    region       = "us-east-1"
+    use_lockfile = true
+  }
 }
 
 provider "aws" {

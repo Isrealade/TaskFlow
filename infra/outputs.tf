@@ -3,6 +3,7 @@ output "taskflow_bucket_url" {
   description = "The static website URL"
 }
 
-output "validation_options" {
-  value = aws_acm_certificate.taskflow-certificate.domain_validation_options
+output "cloudfront_domain" {
+  value = module.cloudfront.cloudfront_distribution_domain_name
+  description = "The cloudfront domain"
 }
