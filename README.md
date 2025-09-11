@@ -52,16 +52,17 @@ flowchart TD
 ```
 
 ---
+
 ## ☁️ Infrastructure Overview
 
 ```mermaid
 flowchart LR
-   User[User] --> CF[AWS CloudFront]
-   CF --> ACM[AWS ACM Certificate]
-   CF --> S3[AWS S3 Bucket (Static Hosting)]
-   User --> GH[GitHub Pages]
-   GH -.->|Backup Hosting| User
+    User[🌍 User] --> CF[☁️ AWS CloudFront]
+    CF --> ACM[🔒 AWS ACM Certificate]
+    CF --> S3[📦 AWS S3 Bucket - Static Hosting ]
+    User --> GH[🌐 GitHub Pages]
 
+    GH -.->|Backup Hosting| User
 ```
 
 ---
